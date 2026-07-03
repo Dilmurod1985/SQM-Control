@@ -1,9 +1,9 @@
 import React from 'react'
 
-type Item = { id: string; name: string; status: 'green' | 'yellow' | 'red'; open_nc?: number }
-type Props = { items: Item[] }
+export type DeptItem = { id: string; name: string; status: 'green' | 'yellow' | 'red'; open_nc?: number }
+type Props = { items: DeptItem[] }
 
-function StatusDot({ status }: { status: Item['status'] }) {
+function StatusDot({ status }: { status: DeptItem['status'] }) {
   const cls = status === 'green' ? 'bg-emerald-500' : status === 'yellow' ? 'bg-amber-400' : 'bg-rose-500'
   return <span className={`inline-block w-3 h-3 rounded-full ${cls}`} />
 }

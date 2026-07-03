@@ -17,8 +17,9 @@ export async function POST(req: Request) {
       if (uploadError) {
         console.error('Storage upload error', uploadError)
       } else {
-        const { publicURL } = supabase.storage.from(bucket).getPublicUrl(key)
-        photoMeta = { key, url: publicURL }
+        const pub = supabase.storage.from(bucket).getPublicUrl(key)
+        const publicUrl = (pub as any)?.data?.publicUrl ?? null
+        photoMeta = { key, url: publicUrl }
       }
     }
 

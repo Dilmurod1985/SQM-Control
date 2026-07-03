@@ -23,9 +23,9 @@ export async function exportAuditsXlsx(options: { from?: string | null; to?: str
     { header: 'Цех', key: 'workshop_id', width: 24 },
     { header: 'Смена', key: 'shift_id', width: 18 },
     { header: 'Примечание', key: 'notes', width: 60 }
-  ]
+  ];
 
-  (audits || []).forEach((a: any) => {
+  ;(audits || []).forEach((a: any) => {
     sheet.addRow({ id: a.id, performed_at: a.performed_at, performed_by: a.performed_by, overall_score: a.overall_score, department_id: a.department_id, workshop_id: a.workshop_id, shift_id: a.shift_id, notes: a.notes })
   })
 
@@ -53,8 +53,7 @@ export async function exportNcXlsx(options: { from?: string | null; to?: string 
     { header: 'Назначен', key: 'assigned_to', width: 36 },
     { header: 'Срок', key: 'due_date', width: 18 }
   ]
-
-  (ncs || []).forEach((n: any) => {
+  ;(ncs || []).forEach((n: any) => {
     sheet.addRow({ id: n.id, title: n.title, severity: n.severity, status: n.status, detected_by: n.detected_by, detected_at: n.detected_at, assigned_to: n.assigned_to, due_date: n.due_date })
   })
 
@@ -98,7 +97,7 @@ export async function exportAuditsPdf(options: { from?: string | null; to?: stri
   })
 
   doc.end()
-  const pdfBuffer = Buffer.concat(chunks)
+  const pdfBuffer = Buffer.concat(chunks as any)
   return pdfBuffer
 }
 

@@ -6,11 +6,10 @@ import { Profile } from '../../db/types'
 import PieCompliance from '../../components/charts/PieCompliance'
 import LineTrend from '../../components/charts/LineTrend'
 import BarTopNc from '../../components/charts/BarTopNc'
-import DeptCards from '../../components/dept/DeptCards'
+import DeptCards, { DeptItem } from '../../components/dept/DeptCards'
 
-type Props = { user?: Profile | null }
-
-export default function DashboardPage({ user }: Props) {
+export default function DashboardPage() {
+  const user = undefined as Profile | undefined | null
   const role = user?.role ?? 'worker'
 
   // Mock data — заменить на real API
@@ -33,10 +32,10 @@ export default function DashboardPage({ user }: Props) {
     { name: 'Маркировка', count: 3 }
   ]
 
-  const deptStatuses = [
-    { id: 'd1', name: 'Цех убоя', status: 'green', open_nc: 1 },
-    { id: 'd2', name: 'Цех переработки', status: 'yellow', open_nc: 4 },
-    { id: 'd3', name: 'Цех фасовки', status: 'red', open_nc: 8 }
+  const deptStatuses: DeptItem[] = [
+    { id: 'd1', name: 'Цех убоя', status: 'green' as DeptItem['status'], open_nc: 1 },
+    { id: 'd2', name: 'Цех переработки', status: 'yellow' as DeptItem['status'], open_nc: 4 },
+    { id: 'd3', name: 'Цех фасовки', status: 'red' as DeptItem['status'], open_nc: 8 }
   ]
 
   return (
