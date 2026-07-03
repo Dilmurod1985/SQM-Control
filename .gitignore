@@ -26,3 +26,5 @@ ccp-photos/
 # Ignore secrets files
 db/*.secret.sql
 .vs/
+.vs/
+.vscode/
