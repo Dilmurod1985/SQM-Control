@@ -1,3 +1,5 @@
+"use client"
+
 import React from 'react'
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts'
 
@@ -12,15 +14,17 @@ export default function PieCompliance({ percent }: Props) {
   ]
 
   return (
-    <ResponsiveContainer width="100%" height="100%">
-      <PieChart>
-        <Pie data={data} dataKey="value" innerRadius={60} outerRadius={80} startAngle={90} endAngle={-270}>
-          {data.map((entry, idx) => (
-            <Cell key={`cell-${idx}`} fill={idx === 0 ? COLORS[0] : COLORS[1]} />
-          ))}
-        </Pie>
-        <Tooltip formatter={(value: any) => `${value}%`} />
-      </PieChart>
-    </ResponsiveContainer>
+    <div className="w-full h-full">
+      <ResponsiveContainer width="100%" height="100%">
+        <PieChart>
+          <Pie data={data} dataKey="value" innerRadius={60} outerRadius={80} startAngle={90} endAngle={-270}>
+            {data.map((entry, idx) => (
+              <Cell key={`cell-${idx}`} fill={idx === 0 ? COLORS[0] : COLORS[1]} />
+            ))}
+          </Pie>
+          <Tooltip formatter={(value: any) => `${value}%`} />
+        </PieChart>
+      </ResponsiveContainer>
+    </div>
   )
 }

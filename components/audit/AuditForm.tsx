@@ -1,4 +1,5 @@
-import React from 'react'
+"use client"
+
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import createAuditSchema, { CreateAuditInput } from '../../zod/schemas/audit'
