@@ -1,3 +1,5 @@
+"use client"
+
 import React from 'react'
 import AuditForm from '../../../components/audit/AuditForm'
 import { AuditTemplateItem } from '../../../db/types'
