@@ -21,7 +21,7 @@ export default function NewAuditPage() {
     <div className="min-h-screen bg-slate-900 text-slate-100 p-6">
       <h1 className="text-2xl font-semibold mb-4">Новый аудит</h1>
       <div className="max-w-3xl">
-        <AuditForm templateItems={sampleItems} userId={userId ?? undefined} onSaved={(id) => window.location.href = `/audit/${id}`} />
+        <AuditForm templateItems={sampleItems} userId={userId ?? undefined} />
       </div>
     </div>
   )

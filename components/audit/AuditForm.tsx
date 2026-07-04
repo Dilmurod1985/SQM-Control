@@ -1,5 +1,6 @@
 "use client"
 
+import { useRouter } from 'next/navigation'
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import createAuditSchema, { CreateAuditInput } from '../../zod/schemas/audit'
@@ -12,6 +13,8 @@ type Props = {
 }
 
 export default function AuditForm({ templateItems, onSaved, userId }: Props) {
+  const router = useRouter()
+
   const { control, handleSubmit, register } = useForm<CreateAuditInput>({
     resolver: zodResolver(createAuditSchema),
     defaultValues: {
@@ -30,7 +33,11 @@ export default function AuditForm({ templateItems, onSaved, userId }: Props) {
       })
       if (!res.ok) throw new Error('Ошибка при сохранении')
       const json = await res.json()
-      onSaved?.(json.id)
+      if (onSaved) {
+        onSaved(json.id)
+      } else {
+        router.push(`/audit/${json.id}`)
+      }
     } catch (e) {
       console.error(e)
       alert('Не удалось сохранить аудит')
