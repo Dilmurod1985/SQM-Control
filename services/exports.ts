@@ -36,10 +36,15 @@ export async function exportAuditsXlsx(options: { from?: string | null; to?: str
 // Примитивный экспорт несоответствий в XLSX
 export async function exportNcXlsx(options: { from?: string | null; to?: string | null; department_id?: string | null }) {
   const supabase = getSupabaseServerClient()
-  const { data: ncs } = await supabase
+  let query = supabase
     .from('non_conformities')
     .select('id,title,severity,status,detected_by,detected_at,assigned_to,due_date')
     .order('detected_at', { ascending: false })
+
+  query = query.gte('detected_at', options.from || '1970-01-01')
+  query = query.lte('detected_at', options.to || new Date().toISOString())
+  if (options.department_id) query = query.eq('department_id', options.department_id)
+  const { data: ncs } = await query
 
   const workbook = new ExcelJS.Workbook()
   const sheet = workbook.addWorksheet('NonConformities')
@@ -62,12 +67,17 @@ export async function exportNcXlsx(options: { from?: string | null; to?: string 
 }
 
 // Простой PDF экспорт аудитов (таблица)
-export async function exportAuditsPdf(options: { from?: string | null; to?: string | null }) {
+export async function exportAuditsPdf(options: { from?: string | null; to?: string | null; department_id?: string | null }) {
   const supabase = getSupabaseServerClient()
-  const { data: audits } = await supabase
+  let query = supabase
     .from('audits')
     .select('id,performed_at,performed_by,overall_score,notes')
     .order('performed_at', { ascending: false })
+
+  query = query.gte('performed_at', options.from || '1970-01-01')
+  query = query.lte('performed_at', options.to || new Date().toISOString())
+  if (options.department_id) query = query.eq('department_id', options.department_id)
+  const { data: audits } = await query
 
   const doc = new PDFDocument({ size: 'A4', margin: 40 })
   const chunks: Buffer[] = []

@@ -7,6 +7,7 @@ import PieCompliance from '../../components/charts/PieCompliance'
 import LineTrend from '../../components/charts/LineTrend'
 import BarTopNc from '../../components/charts/BarTopNc'
 import DeptCards, { DeptItem } from '../../components/dept/DeptCards'
+import ExportButton from '../../components/ui/ExportButton'
 
 export default function DashboardPage() {
   const user = undefined as Profile | undefined | null
@@ -69,6 +70,12 @@ export default function DashboardPage() {
 
           <section className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
             <DeptCards items={deptStatuses} />
+            <div className="p-3 bg-slate-800 rounded">
+              <div className="font-medium mb-2">Отчёты</div>
+              <div>
+                <ExportButton type="audits" label="Скачать Excel отчёт" params={{ from: undefined, to: undefined }} />
+              </div>
+            </div>
             <Card title="Последние аудиты">
               <ul className="space-y-3">
                 <li className="flex justify-between">

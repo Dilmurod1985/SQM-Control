@@ -5,23 +5,23 @@ import { exportAuditsXlsx, exportAuditsPdf, exportNcXlsx } from '../../../servic
 export async function POST(req: Request) {
   try {
     const body = await req.json()
-    const { format, type, from, to } = body
+    const { format, type, from, to, department_id } = body
     // type: 'audits' | 'nc'
     if (!format || !type) return NextResponse.json({ error: 'format and type required' }, { status: 400 })
 
     if (type === 'audits') {
       if (format === 'xlsx') {
-        const buffer = await exportAuditsXlsx({ from, to })
+        const buffer = await exportAuditsXlsx({ from, to, department_id })
         return new Response(buffer, { status: 200, headers: { 'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'Content-Disposition': `attachment; filename="audits_${Date.now()}.xlsx"` } })
       }
       if (format === 'pdf') {
-        const buffer = await exportAuditsPdf({ from, to })
+        const buffer = await exportAuditsPdf({ from, to, department_id })
         return new Response(buffer, { status: 200, headers: { 'Content-Type': 'application/pdf', 'Content-Disposition': `attachment; filename="audits_${Date.now()}.pdf"` } })
       }
     }
 
     if (type === 'nc' && format === 'xlsx') {
-      const buffer = await exportNcXlsx({ from, to })
+      const buffer = await exportNcXlsx({ from, to, department_id })
       return new Response(buffer, { status: 200, headers: { 'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'Content-Disposition': `attachment; filename="nc_${Date.now()}.xlsx"` } })
     }
 

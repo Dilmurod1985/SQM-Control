@@ -1,12 +1,12 @@
 import React from 'react'
-import AuditExportPanel from './components/AuditExportPanel'
+import NcExportPanel from './components/NcExportPanel'
 
-export default function AuditLayout({ children }: { children: React.ReactNode }) {
+export default function NcLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex gap-4">
       <div className="flex-1">{children}</div>
       <aside className="w-64">
-        <AuditExportPanel />
+        <NcExportPanel />
       </aside>
     </div>
   )
