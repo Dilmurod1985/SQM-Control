@@ -14,7 +14,8 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^2.0.0",
-    "@supabase/supabase-js": "^2.28.0",
+    "@supabase/ssr": "^0.12.0",
+    "@supabase/supabase-js": "^2.110.0",
     "exceljs": "^4.4.0",
     "next": "15.0.0",
     "pdfkit": "^0.19.1",
@@ -25,15 +26,14 @@
     "zod": "^3.0.0"
   },
   "devDependencies": {
+    "@types/node": "^20.4.2",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
-    "@types/node": "^20.4.2",
-    "tailwindcss": "^3.4.7",
-    "postcss": "^8.4.24",
     "autoprefixer": "^10.4.14",
     "eslint": "^8.0.0",
     "eslint-config-next": "^13.0.0",
-
+    "postcss": "^8.4.24",
+    "tailwindcss": "^3.4.7",
     "typescript": "^5.0.0"
   }
 }
