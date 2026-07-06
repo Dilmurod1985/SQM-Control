@@ -1,4 +1,6 @@
 import React from 'react'
+// Force server-rendering on every request (disable Next.js static optimization)
+export const dynamic = 'force-dynamic'
 import Sidebar from '../../components/layout/Sidebar'
 import Topbar from '../../components/layout/Topbar'
 import Card from '../../components/ui/Card'
