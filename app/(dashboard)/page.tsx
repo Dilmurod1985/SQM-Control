@@ -8,7 +8,7 @@ import LineTrend from '../../components/charts/LineTrend'
 import BarTopNc from '../../components/charts/BarTopNc'
 import DeptCards, { DeptItem } from '../../components/dept/DeptCards'
 import ExportButton from '../../components/ui/ExportButton'
-import { supabase } from '@/lib/supabase'
+import { supabase } from '../../lib/supabase'
 
 export default async function DashboardPage() {
   const user = undefined as Profile | undefined | null
