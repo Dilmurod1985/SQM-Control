@@ -17,13 +17,13 @@ export default async function DashboardPage() {
   // Попытка получить реальные данные из Supabase, при неудаче — мок
   let auditsData: any[] | null = null
   try {
-    const { data } = await supabase
+    const { data: audits } = await supabase
       .from('audits')
       .select('*')
       .order('created_at', { ascending: false })
-      .limit(10)
+      .limit(5)
 
-    auditsData = data as any[] | null
+    auditsData = audits as any[] | null
   } catch (e) {
     auditsData = null
   }
@@ -101,7 +101,7 @@ export default async function DashboardPage() {
                 {auditsList.length === 0 && (
                   <li className="text-sm text-slate-400">Нет доступных аудитов (используется мок-данные)</li>
                 )}
-                {auditsList.slice(0, 10).map((a) => (
+                {auditsList.slice(0, 5).map((a) => (
                   <li key={a.id ?? `${a.department}-${a.created_at}`} className="flex justify-between">
                     <div>
                       <div className="font-medium">{a.department ?? 'Аудит без названия'}</div>
