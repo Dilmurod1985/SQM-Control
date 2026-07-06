@@ -23,7 +23,7 @@ export default async function DashboardPage() {
   try {
     const { data } = await supabase
       .from('audits')
-      .select('*')
+      .select('department, created_at, date, overall_score, notes')
       .order('created_at', { ascending: false })
       .limit(5)
     auditsData = data || []
@@ -104,15 +104,19 @@ export default async function DashboardPage() {
                 {auditsList.length === 0 && (
                   <li className="text-sm text-slate-400">Нет доступных аудитов (используется мок-данные)</li>
                 )}
-                {auditsList.slice(0, 5).map((a) => (
-                  <li key={a.id ?? `${a.department}-${a.created_at}`} className="flex justify-between">
-                    <div>
-                      <div className="font-medium">{a.department ?? 'Аудит без названия'}</div>
-                      <div className="text-xs text-slate-400">{a.department ?? ''} — {a.created_at ? new Date(a.created_at).toLocaleString() : '—'}</div>
-                    </div>
-                    <div className={`${(a.overall_score ?? 0) >= 90 ? 'text-green-400' : (a.overall_score ?? 0) >=75 ? 'text-yellow-400' : 'text-red-400'} font-semibold`}>{a.overall_score ? `${a.overall_score}%` : '—'}</div>
-                  </li>
-                ))}
+                {auditsList.slice(0, 5).map((a, idx) => {
+                  const dateVal = a.date ?? a.created_at
+                  return (
+                    <li key={a.id ?? `${a.department}-${dateVal}-${idx}`} className="flex justify-between">
+                      <div>
+                        <div className="font-medium">{a.department ?? 'Аудит без названия'}</div>
+                        <div className="text-xs text-slate-400">{dateVal ? new Date(dateVal).toLocaleString() : '—'}</div>
+                        {a.notes && <div className="text-xs text-slate-400 mt-1">{a.notes}</div>}
+                      </div>
+                      <div className={`${(a.overall_score ?? 0) >= 90 ? 'text-green-400' : (a.overall_score ?? 0) >=75 ? 'text-yellow-400' : 'text-red-400'} font-semibold`}>{a.overall_score ? `${a.overall_score}%` : '—'}</div>
+                    </li>
+                  )
+                })}
               </ul>
             </Card>
           </section>
