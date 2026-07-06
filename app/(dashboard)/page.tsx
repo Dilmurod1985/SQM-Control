@@ -16,20 +16,22 @@ export default async function DashboardPage() {
   const role = user?.role ?? 'worker'
 
   // Серверный Supabase клиент с cookie
-  const supabase = createClient(await cookies())
+  const cookieStore = await cookies()
+  const supabase = createClient(cookieStore)
 
-  let auditsList: any[] = []
+  let auditsData: any[] = []
   try {
-    const { data: audits } = await supabase
+    const { data } = await supabase
       .from('audits')
       .select('*')
       .order('created_at', { ascending: false })
       .limit(5)
-
-    auditsList = audits ?? []
+    auditsData = data || []
   } catch (e) {
-    auditsList = []
+    console.error('Supabase error:', e)
   }
+
+  const auditsList = auditsData
 
   const compliancePercent = auditsList.length
     ? Math.round(
