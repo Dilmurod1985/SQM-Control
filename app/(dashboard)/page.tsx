@@ -8,13 +8,33 @@ import LineTrend from '../../components/charts/LineTrend'
 import BarTopNc from '../../components/charts/BarTopNc'
 import DeptCards, { DeptItem } from '../../components/dept/DeptCards'
 import ExportButton from '../../components/ui/ExportButton'
+import { supabase } from '@/lib/supabase'
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
   const user = undefined as Profile | undefined | null
   const role = user?.role ?? 'worker'
 
-  // Mock data — заменить на real API
-  const compliancePercent = 78 // общий % соответствия
+  // Попытка получить реальные данные из Supabase, при неудаче — мок
+  let auditsData: any[] | null = null
+  try {
+    const { data } = await supabase
+      .from('audits')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(10)
+
+    auditsData = data as any[] | null
+  } catch (e) {
+    auditsData = null
+  }
+
+  const auditsList = auditsData ?? []
+
+  const compliancePercent = auditsList.length
+    ? Math.round(
+        auditsList.reduce((s, a) => s + (a.overall_score ?? 0), 0) / auditsList.length,
+      )
+    : 78 // fallback
   const trendData = [
     { date: '6 дней', value: 72 },
     { date: '5 дн', value: 74 },
@@ -78,20 +98,18 @@ export default function DashboardPage() {
             </div>
             <Card title="Последние аудиты">
               <ul className="space-y-3">
-                <li className="flex justify-between">
-                  <div>
-                    <div className="font-medium">Аудит: Приёмка мяса — Утренняя смена</div>
-                    <div className="text-xs text-slate-400">Цех 2 — 2026-07-02 08:10</div>
-                  </div>
-                  <div className="text-green-400 font-semibold">92%</div>
-                </li>
-                <li className="flex justify-between">
-                  <div>
-                    <div className="font-medium">Аудит: Гигиена персонала</div>
-                    <div className="text-xs text-slate-400">Цех 1 — 2026-07-02 07:30</div>
-                  </div>
-                  <div className="text-yellow-400 font-semibold">78%</div>
-                </li>
+                {auditsList.length === 0 && (
+                  <li className="text-sm text-slate-400">Нет доступных аудитов (используется мок-данные)</li>
+                )}
+                {auditsList.slice(0, 10).map((a) => (
+                  <li key={a.id ?? `${a.department}-${a.created_at}`} className="flex justify-between">
+                    <div>
+                      <div className="font-medium">{a.department ?? 'Аудит без названия'}</div>
+                      <div className="text-xs text-slate-400">{a.department ?? ''} — {a.created_at ? new Date(a.created_at).toLocaleString() : '—'}</div>
+                    </div>
+                    <div className={`${(a.overall_score ?? 0) >= 90 ? 'text-green-400' : (a.overall_score ?? 0) >=75 ? 'text-yellow-400' : 'text-red-400'} font-semibold`}>{a.overall_score ? `${a.overall_score}%` : '—'}</div>
+                  </li>
+                ))}
               </ul>
             </Card>
           </section>
