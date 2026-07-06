@@ -8,14 +8,17 @@ import LineTrend from '../../components/charts/LineTrend'
 import BarTopNc from '../../components/charts/BarTopNc'
 import DeptCards, { DeptItem } from '../../components/dept/DeptCards'
 import ExportButton from '../../components/ui/ExportButton'
-import { supabase } from '../../lib/supabase'
+import { createClient } from '../../utils/supabase/server'
+import { cookies } from 'next/headers'
 
 export default async function DashboardPage() {
   const user = undefined as Profile | undefined | null
   const role = user?.role ?? 'worker'
 
-  // Попытка получить реальные данные из Supabase, при неудаче — мок
-  let auditsData: any[] | null = null
+  // Серверный Supabase клиент с cookie
+  const supabase = createClient(await cookies())
+
+  let auditsList: any[] = []
   try {
     const { data: audits } = await supabase
       .from('audits')
@@ -23,12 +26,10 @@ export default async function DashboardPage() {
       .order('created_at', { ascending: false })
       .limit(5)
 
-    auditsData = audits as any[] | null
+    auditsList = audits ?? []
   } catch (e) {
-    auditsData = null
+    auditsList = []
   }
-
-  const auditsList = auditsData ?? []
 
   const compliancePercent = auditsList.length
     ? Math.round(
